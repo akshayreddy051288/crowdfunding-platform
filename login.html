@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — CrowdHeal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary:      #0F5C5C;
+      --primary-dark:  #0a4545;
+      --coral:        #E8563E;
+      --coral-hover:  #d14a34;
+      --gold:         #F0B429;
+      --bg:           #FAFAF7;
+      --charcoal:     #1B2430;
+      --funded:       #2E7D5B;
+      --font-display: 'Fraunces', serif;
+      --font-body:    'Manrope', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--charcoal);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(15,92,92,.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(240,180,41,.06) 0%, transparent 60%),
+        var(--bg);
+    }
+
+    a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
+
+    /* ══════════ Card ══════════ */
+    .card {
+      width: 100%;
+      max-width: 600px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 32px rgba(15,92,92,.07), 0 1px 4px rgba(0,0,0,.04);
+      padding: 44px 40px 36px;
+      display: flex;
+      flex-direction: column;
+      animation: riseIn .5s ease-out both;
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Brand ── */
+    .card__brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.45rem;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 28px;
+      letter-spacing: -.02em;
+    }
+    .card__brand span { color: var(--coral); }
+
+    /* ── Header ── */
+    .card__title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.55rem;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .card__sub {
+      text-align: center;
+      font-size: .88rem;
+      color: #6b7786;
+      margin-bottom: 30px;
+    }
+    .card__sub a { color: var(--coral); }
+
+    /* ── Social row ── */
+    .social-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .social-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 0;
+      background: #fff;
+      border: 1.5px solid #e2e6ea;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: .84rem;
+      color: var(--charcoal);
+      cursor: pointer;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .social-btn:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(15,92,92,.08);
+    }
+    .social-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+      font-size: .72rem;
+      font-weight: 600;
+      color: #a3aab4;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #eaecf0;
+    }
+
+    /* ── Fields ── */
+    .field { display: flex; flex-direction: column; margin-bottom: 16px; }
+
+    .field label {
+      font-size: .78rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .field input {
+      padding: 12px 14px;
+      border: 1.5px solid #dfe3e8;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: .9rem;
+      color: var(--charcoal);
+      background: var(--bg);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .field input::placeholder { color: #b3bac4; }
+    .field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15,92,92,.1);
+      background: #fff;
+    }
+
+    /* password toggle */
+    .pw-wrap { position: relative; display: flex; }
+    .pw-wrap input { flex: 1; padding-right: 44px; }
+
+    .pw-toggle {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      cursor: pointer;
+      color: #a3aab4;
+      display: flex; padding: 4px;
+      transition: color .2s;
+    }
+    .pw-toggle:hover { color: var(--primary); }
+    .pw-toggle svg { width: 18px; height: 18px; }
+
+    /* ── Options row ── */
+    .options-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      font-size: .8rem;
+    }
+    .options-row label {
+      display: flex; align-items: center; gap: 6px;
+      cursor: pointer; color: #5a6572; font-weight: 500;
+    }
+    .options-row label input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 15px; height: 15px; cursor: pointer;
+    }
+    .options-row a { color: var(--coral); font-size: .8rem; }
+
+    /* ── CTA ── */
+    .btn-submit {
+      width: 100%;
+      padding: 13px;
+      background: var(--coral);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, box-shadow .2s, transform .1s;
+    }
+    .btn-submit:hover {
+      background: var(--coral-hover);
+      box-shadow: 0 6px 20px rgba(232,86,62,.28);
+    }
+    .btn-submit:active { transform: scale(.985); }
+
+    /* ── Footer ── */
+    .card__footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: .82rem;
+      color: #6b7786;
+    }
+    .card__footer a { color: var(--primary); }
+
+    /* ══════════ Responsive ══════════ */
+    @media (max-width: 480px) {
+      .card { padding: 32px 24px 28px; border-radius: 16px; }
+      .card__title { font-size: 1.3rem; }
+      .social-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Brand -->
+    <div class="card__brand">Crowd<span>Heal</span></div>
+
+    <!-- Header -->
+    <h1 class="card__title">Welcome back</h1>
+    <p class="card__sub">Don't have an account? <a href="signup.html" id="signupLink">Sign up</a></p>
+
+    <!-- Social Login -->
+    <div class="social-row">
+      <button class="social-btn" type="button">
+        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Google
+      </button>
+      <button class="social-btn" type="button">
+        <svg viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047v-2.66c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.971H15.83c-1.491 0-1.956.93-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+        Facebook
+      </button>
+    </div>
+
+    <div class="divider">or</div>
+
+    <!-- Form -->
+    <form id="loginForm" action="#" method="POST">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
+          <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePw()">
+            <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="options-row">
+        <label><input type="checkbox" name="remember" /> Remember me</label>
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <p id="authMessage" role="status" aria-live="polite" style="display:none;color:#b43c28;background:#fff0ed;border-radius:8px;padding:10px 12px;margin:0 0 14px;font-size:.85rem"></p>
+      <button type="submit" class="btn-submit">Sign In</button>
+    </form>
+
+    <p class="card__footer">
+      Protected by <a href="#">CrowdHeal</a> · <a href="#">Privacy</a> · <a href="#">Terms</a>
+    </p>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    function togglePw() {
+      const inp = document.getElementById('password');
+      const ico = document.getElementById('eyeIcon');
+      const show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      ico.innerHTML = show
+        ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>'
+        : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    }
+
+    const returnTarget = CrowdHealAuth.getReturnTarget();
+    if (returnTarget === 'create-campaign.html' || returnTarget.startsWith('create-campaign.html?')) {
+      document.getElementById('signupLink').href = `signup.html?returnTo=${encodeURIComponent(returnTarget)}`;
+      document.querySelector('.card__title').textContent = returnTarget.includes('?edit=') ? 'Sign in to edit your fundraiser' : 'Sign in to start your fundraiser';
+    } else if (returnTarget === 'dashboard.html') {
+      document.getElementById('signupLink').href = 'signup.html?returnTo=dashboard.html';
+      document.querySelector('.card__title').textContent = 'Sign in to manage your fundraisers';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const message = document.getElementById('authMessage');
+      message.style.display = 'none';
+      try {
+        await CrowdHealAuth.signIn({email: document.getElementById('email').value, password: document.getElementById('password').value});
+        window.location.href = returnTarget;
+      } catch (error) {
+        message.textContent = error.message || 'Unable to sign in. Please try again.';
+        message.style.display = 'block';
+      }
+    });
+  </script>
+
+</body>
+</html>

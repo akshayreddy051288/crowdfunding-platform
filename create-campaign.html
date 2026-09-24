@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Create a medical fundraiser on CrowdHeal and invite your community to help." />
+  <title>Start a Fundraiser — CrowdHeal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{--primary:#0f5c5c;--primary-dark:#0a4545;--coral:#e8563e;--coral-hover:#d14a34;--gold:#f0b429;--bg:#fafaf7;--ink:#1b2430;--green:#2e7d5b;--muted:#6b7786;--border:#e2e6ea;--display:'Fraunces',serif;--body:'Manrope',sans-serif;--container:1180px}
+    *,*:before,*:after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font:16px/1.6 var(--body);color:var(--ink);background:radial-gradient(ellipse at 30% 0%,rgba(15,92,92,.12),transparent 75%),radial-gradient(ellipse at 90% 100%,rgba(240,180,41,.08),transparent 75%),var(--bg);min-height:100vh;display:flex;flex-direction:column}a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}button,input,select,textarea{font:inherit}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+    .container{width:min(100% - 48px,var(--container));margin-inline:auto}.site-header{position:sticky;top:0;z-index:10;background:rgba(250,250,247,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(226,230,234,.8);box-shadow:0 4px 20px rgba(0,0,0,.06)}.header-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{font:800 1.4rem var(--display);letter-spacing:-.02em;color:var(--primary)}.brand span{color:var(--coral)}.site-nav{display:flex;align-items:center;gap:26px}.site-nav a{font-size:.9rem;font-weight:700;color:var(--ink)}.site-nav a:hover,.site-nav a.active{color:var(--primary)}.header-actions{display:flex;align-items:center;gap:10px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:10px;font-weight:800;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s}.btn:hover{transform:translateY(-1px);text-decoration:none}.btn--ghost{color:var(--primary);border:1.5px solid var(--border);background:transparent}.btn--coral{background:var(--coral);color:white}.btn--coral:hover{background:var(--coral-hover)}.nav-toggle{display:none;border:0;background:transparent;color:var(--ink);padding:8px}.mobile-nav{display:none;padding:12px 0 18px;border-top:1px solid var(--border)}.mobile-nav.open{display:grid;gap:10px}.mobile-nav a{padding:5px 0;font-weight:700;color:var(--ink)}
+    main{flex:1}.page-intro{text-align:center;padding:45px 0 30px}.eyebrow{display:inline-flex;align-items:center;gap:7px;border:1px solid #dcebe4;background:#f0f7f3;color:var(--green);font-size:.78rem;font-weight:800;padding:6px 12px;border-radius:99px}.page-title{font:700 clamp(2.2rem,5vw,3.3rem)/1.12 var(--display);letter-spacing:-.035em;margin:14px 0 10px}.page-title em{font-weight:600;color:var(--primary);font-style:italic}.page-description{max-width:660px;margin:auto;color:var(--muted)}.form-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start;padding:0 0 76px}.form-card,.aside-card{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 34px rgba(27,36,48,.06)}.form-card{padding:30px}.form-section+.form-section{margin-top:28px;padding-top:25px;border-top:1px solid var(--border)}.section-heading{display:flex;gap:12px;align-items:center;margin-bottom:20px}.section-number{display:grid;place-items:center;flex:0 0 34px;height:34px;border-radius:10px;background:#eaf3f0;color:var(--primary);font-weight:800}.section-heading h2{font:600 1.35rem var(--display)}.section-heading p{font-size:.83rem;color:var(--muted)}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}.field{min-width:0}.field--full{grid-column:1/-1}.field label{display:block;margin:0 0 6px;font-size:.85rem;font-weight:800}.required{color:var(--coral)}.hint{font-size:.76rem;color:var(--muted);font-weight:500}.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 13px;background:#fff;color:var(--ink);font-size:.92rem;transition:border-color .18s,box-shadow .18s}.field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--primary);box-shadow:0 0 0 3px rgba(15,92,92,.1)}.field textarea{min-height:150px;resize:vertical;line-height:1.6}.field input::placeholder,.field textarea::placeholder{color:#9aa4ad}.story-meta{display:flex;justify-content:space-between;gap:12px;margin-top:5px;color:var(--muted);font-size:.75rem}.image-preview{display:none;margin-top:12px;width:100%;max-height:230px;object-fit:cover;border-radius:12px;border:1px solid var(--border)}.image-preview.visible{display:block}.aside{position:sticky;top:95px;display:grid;gap:16px}.aside-card{padding:22px}.aside-card h2{font:600 1.22rem var(--display);margin-bottom:10px}.check-list{display:grid;gap:13px;list-style:none;color:#4c5965;font-size:.85rem}.check-list li{display:flex;gap:10px;align-items:flex-start}.check{color:var(--green);font-weight:900}.aside-note{margin-top:18px;padding-top:15px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem}.publish-wrap{display:grid;gap:11px;margin-top:24px}.publish-btn{width:100%;padding:15px 20px;font-size:.98rem}.publish-btn:disabled{background:#b9c1c6;box-shadow:none;transform:none;cursor:not-allowed}.publish-hint{text-align:center;font-size:.77rem;color:var(--muted)}.form-message{display:none;margin-top:16px;padding:13px 15px;border-radius:10px;font-size:.88rem;font-weight:700}.form-message.error{display:block;background:#fff0ed;color:#a83e2b;border:1px solid #f2c7bd}.form-message.success{display:block;background:#edf6f0;color:#286747;border:1px solid #cfe5d5}.form-footer{background:#fff;margin-top:auto;padding:28px 0;color:var(--muted);font-size:.82rem}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}.footer-links{display:flex;gap:18px;flex-wrap:wrap}.footer-links a{color:var(--primary)}
+    @media(max-width:900px){.site-nav,.header-actions{display:none}.nav-toggle{display:block}.form-layout{grid-template-columns:1fr}.aside{position:static;grid-row:1;grid-template-columns:1fr 1fr}.aside-card:first-child{grid-column:1/-1}}@media(max-width:600px){.container{width:min(100% - 30px,var(--container))}.page-intro{padding:32px 0 23px}.form-layout{padding-bottom:45px}.form-card{padding:21px 17px}.field-grid{grid-template-columns:1fr;gap:14px}.field--full{grid-column:auto}.aside{grid-template-columns:1fr}.aside-card:first-child{grid-column:auto}.footer-inner{align-items:flex-start;flex-direction:column}.page-title{font-size:2.35rem}}
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="container"><div class="header-inner"><a class="brand" href="home.html" aria-label="CrowdHeal home">Crowd<span>Heal</span></a><nav class="site-nav" aria-label="Main navigation"><a href="campaigns.html">Browse Campaigns</a><a href="home.html#how-it-works">How It Works</a><a class="active" href="create-campaign.html">Start a Fundraiser</a></nav><div class="header-actions"><a class="btn btn--ghost" href="login.html">Sign In</a></div><button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button></div><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation"><a href="campaigns.html">Browse Campaigns</a><a href="home.html#how-it-works">How It Works</a><a href="login.html">Sign In</a></nav></div></header>
+  <main>
+    <section class="page-intro container"><span class="eyebrow">✦ &nbsp;Start a verified fundraiser</span><h1 class="page-title">Help your community <em>show up.</em></h1><p class="page-description">Share the patient's story and treatment goal. Required details must be complete before you can publish your campaign.</p></section>
+    <div class="form-layout container">
+      <form class="form-card" id="campaignForm" novalidate>
+        <section class="form-section" aria-labelledby="storyHeading"><div class="section-heading"><span class="section-number">1</span><div><h2 id="storyHeading">Campaign story</h2><p>Tell people who needs help and why.</p></div></div><div class="field-grid">
+          <div class="field field--full"><label for="campaignName">Campaign title <span class="required">*</span></label><input id="campaignName" name="name" type="text" maxlength="90" placeholder="e.g. Help Ravi get his liver transplant" required /></div>
+          <div class="field"><label for="organizerName">Your name <span class="required">*</span></label><input id="organizerName" name="organizerName" type="text" autocomplete="name" maxlength="80" placeholder="Your full name" required /></div>
+          <div class="field"><label for="organizerEmail">Your email <span class="required">*</span></label><input id="organizerEmail" name="organizerEmail" type="email" autocomplete="email" maxlength="120" placeholder="you@example.com" required /></div>
+          <div class="field field--full"><label for="story">Patient's story <span class="required">*</span> <span class="hint">Include the diagnosis, treatment needed, and how donations will help.</span></label><textarea id="story" name="story" minlength="30" maxlength="1400" placeholder="Write the patient's story in your own words…" required></textarea><div class="story-meta"><span>At least 30 characters</span><span id="storyCount">0 / 1400</span></div></div>
+        </div></section>
+        <section class="form-section" aria-labelledby="medicalHeading"><div class="section-heading"><span class="section-number">2</span><div><h2 id="medicalHeading">Medical and hospital details</h2><p>Help supporters understand where treatment is taking place.</p></div></div><div class="field-grid">
+          <div class="field"><label for="hospital">Hospital or care centre <span class="required">*</span></label><input id="hospital" name="hospital" type="text" maxlength="100" placeholder="Hospital name" required /></div>
+          <div class="field"><label for="location">City and region <span class="required">*</span></label><input id="location" name="location" type="text" maxlength="100" placeholder="e.g. Hyderabad, Telangana" required /></div>
+          <div class="field"><label for="category">Treatment category <span class="required">*</span></label><select id="category" name="category" required><option value="" selected disabled>Select a category</option><option>Cancer</option><option>Emergency</option><option>Pediatric</option><option>Surgery</option><option>Transplant</option><option>Other</option></select></div>
+          <div class="field"><label for="daysLeft">Fundraising duration <span class="required">*</span></label><select id="daysLeft" name="daysLeft" required><option value="" selected disabled>Select duration</option><option value="7">7 days</option><option value="14">14 days</option><option value="30">30 days</option><option value="45">45 days</option><option value="60">60 days</option><option value="90">90 days</option></select></div>
+        </div></section>
+        <section class="form-section" aria-labelledby="goalHeading"><div class="section-heading"><span class="section-number">3</span><div><h2 id="goalHeading">Fundraising goal</h2><p>Set the amount needed for treatment and care.</p></div></div><div class="field-grid">
+          <div class="field"><label for="goal">Target amount (INR) <span class="required">*</span></label><input id="goal" name="goal" type="number" min="1000" max="100000000" step="1000" inputmode="numeric" placeholder="e.g. 800000" required /><span class="hint">Minimum ₹1,000. You can update it later.</span></div>
+          <div class="field"><label for="image">Campaign image URL <span class="required">*</span></label><input id="image" name="image" type="url" maxlength="500" placeholder="https://example.com/patient-photo.jpg" required/><span class="hint">A direct image link is required.</span><img class="image-preview" id="imagePreview" alt="Preview of the campaign image" /></div>
+        </div></section>
+        <div class="form-message" id="formMessage" role="status" aria-live="polite"></div>
+        <div class="publish-wrap"><button class="btn btn--coral publish-btn" id="publishButton" type="submit" disabled>Publish Campaign</button><p class="publish-hint" id="publishHint">Complete all required fields to enable publishing.</p></div>
+      </form>
+      <aside class="aside"><section class="aside-card"><h2>Before you publish</h2><ul class="check-list"><li><span class="check">✓</span><span>Use a clear title and explain the treatment in your own words.</span></li><li><span class="check">✓</span><span>Double-check the hospital, location, and fundraising target.</span></li><li><span class="check">✓</span><span>Choose an image URL that you have permission to share.</span></li></ul></section></aside>
+    </div>
+  </main>
+  <footer class="form-footer"><div class="container footer-inner"><a class="brand" href="home.html">Crowd<span>Heal</span></a><div class="footer-links"><a href="campaigns.html">Browse Campaigns</a><a href="login.html">Sign In</a><a href="signup.html">Create an account</a></div><span>© 2026 CrowdHeal. All rights reserved.</span></div></footer>
+  <script src="auth.js"></script>
+  <script>
+    const currentUser=CrowdHealAuth.getSession();
+    const editId=new URLSearchParams(location.search).get('edit');
+    if(!currentUser){const target=editId?`create-campaign.html?edit=${editId}`:'create-campaign.html';window.location.replace(`login.html?returnTo=${encodeURIComponent(target)}`);}
+    const form=document.getElementById('campaignForm');
+    const requiredFields=[...form.querySelectorAll('[required]')];
+    const publishButton=document.getElementById('publishButton');
+    const publishHint=document.getElementById('publishHint');
+    const formMessage=document.getElementById('formMessage');
+    const storyField=document.getElementById('story');
+    const storyCount=document.getElementById('storyCount');
+    const imageField=document.getElementById('image');
+    const imagePreview=document.getElementById('imagePreview');
+    let campaignToEdit=null;
+    if(editId&&currentUser){
+      try{
+        const saved=JSON.parse(localStorage.getItem('crowdhealCampaigns')||'[]');
+        const candidate=Array.isArray(saved)?saved.find(item=>item.id===editId):null;
+        const ownerEmail=String(candidate&&(candidate.ownerEmail||candidate.organizerEmail)||'').toLowerCase();
+        const userName=[currentUser.firstName,currentUser.lastName].filter(Boolean).join(' ').toLowerCase();
+        const isOwner=candidate&&(ownerEmail?ownerEmail===currentUser.email.toLowerCase():String(candidate.organizerName||'').toLowerCase()===userName);
+        if(!isOwner){window.location.replace('dashboard.html');}
+        else{
+          campaignToEdit=candidate;
+          ['name','organizerName','organizerEmail','story','hospital','location','category','daysLeft','goal','image'].forEach(name=>{const field=form.elements.namedItem(name);if(field&&candidate[name]!=null)field.value=candidate[name];});
+          if(!candidate.organizerName)form.elements.namedItem('organizerName').value=[currentUser.firstName,currentUser.lastName].filter(Boolean).join(' ');
+          if(!candidate.organizerEmail)form.elements.namedItem('organizerEmail').value=candidate.ownerEmail||currentUser.email;
+          storyCount.textContent=`${storyField.value.length} / 1400`;
+          if(candidate.image){imagePreview.src=candidate.image;imagePreview.classList.add('visible');imagePreview.onerror=()=>imagePreview.classList.remove('visible');}
+          document.querySelector('.page-title').innerHTML='Update your <em>fundraiser.</em>';
+          document.querySelector('.page-description').textContent='Edit the campaign details supporters see. Your fundraising progress and donor history will be kept.';
+          publishButton.textContent='Save Changes';
+          document.querySelector('.eyebrow').textContent='Manage your fundraiser';
+        }
+      }catch(_){window.location.replace('dashboard.html');}
+    }
+    function updateFormState(){
+      const valid=requiredFields.every(field=>field.checkValidity())&&Number(document.getElementById('goal').value)>=1000;
+      publishButton.disabled=!valid;
+      publishHint.textContent=valid?'Your required details are complete. You can publish now.':'Complete all required fields to enable publishing.';
+    }
+    form.addEventListener('input',event=>{
+      if(event.target===storyField)storyCount.textContent=`${storyField.value.length} / 1400`;
+      formMessage.className='form-message';
+      updateFormState();
+    });
+    form.addEventListener('change',updateFormState);
+    imageField.addEventListener('input',()=>{
+      const value=imageField.value.trim();
+      if(value&&imageField.checkValidity()){imagePreview.src=value;imagePreview.classList.add('visible');imagePreview.onerror=()=>imagePreview.classList.remove('visible');}
+      else{imagePreview.removeAttribute('src');imagePreview.classList.remove('visible');}
+    });
+    form.addEventListener('submit',event=>{
+      event.preventDefault();
+      if(!CrowdHealAuth.getSession()){
+        window.location.href='login.html?returnTo=create-campaign.html';
+        return;
+      }
+      updateFormState();
+      if(!form.checkValidity()||publishButton.disabled){form.reportValidity();return;}
+      const values=new FormData(form);
+      const id=campaignToEdit?campaignToEdit.id:`campaign-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,7)}`;
+      const title=values.get('name').trim();
+      const daysLeft=Number(values.get('daysLeft'));
+      const image=values.get('image').trim();
+      const campaign={...(campaignToEdit||{}),id,name:title,organizerName:values.get('organizerName').trim(),organizerEmail:currentUser.email,ownerEmail:currentUser.email.toLowerCase(),location:values.get('location').trim(),story:values.get('story').trim(),raised:campaignToEdit?Number(campaignToEdit.raised)||0:0,goal:Number(values.get('goal')),donors:campaignToEdit?Number(campaignToEdit.donors)||0:0,daysLeft,category:values.get('category'),urgentBadge:daysLeft<=7?`${daysLeft} Days Left`:daysLeft<=14?'Urgent': 'New Campaign',hospital:values.get('hospital').trim(),image,alt:`Campaign image for ${title}`};
+      try{
+        const saved=JSON.parse(localStorage.getItem('crowdhealCampaigns')||'[]');
+        if(!Array.isArray(saved))throw new Error('Saved campaign data is invalid.');
+        if(campaignToEdit){const index=saved.findIndex(item=>item.id===campaignToEdit.id);if(index<0)throw new Error('Campaign no longer exists.');saved[index]=campaign;}
+        else saved.push(campaign);
+        localStorage.setItem('crowdhealCampaigns',JSON.stringify(saved));
+        formMessage.textContent=campaignToEdit?'Your campaign has been updated. Opening your dashboard…':'Your campaign is published. Opening your dashboard…';
+        formMessage.className='form-message success';
+        publishButton.disabled=true;
+        window.location.href='dashboard.html';
+      }catch(error){
+        formMessage.textContent='We could not save this campaign in your browser. Please check browser storage settings and try again.';
+        formMessage.className='form-message error';
+      }
+    });
+    const navToggle=document.getElementById('navToggle');
+    const mobileNav=document.getElementById('mobileNav');
+    navToggle.addEventListener('click',()=>{const open=mobileNav.classList.toggle('open');navToggle.setAttribute('aria-expanded',open);});
+    updateFormState();
+  </script>
+</body>
+</html>

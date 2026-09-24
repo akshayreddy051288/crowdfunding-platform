@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Read a campaign story and see its fundraising progress on CrowdHeal." />
+  <title>Campaign Details — CrowdHeal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{--teal:#0f5c5c;--coral:#e8563e;--ink:#1b2430;--muted:#687583;--line:#e2e6ea;--bg:#fafaf7;--white:#fff;--green:#2e7d5b;--display:'Fraunces',serif;--body:'Manrope',sans-serif}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 30% 0%,rgba(15,92,92,.12) 0%,transparent 75%),radial-gradient(ellipse at 90% 100%,rgba(240,180,41,.08) 0%,transparent 75%),var(--bg);color:var(--ink);font:16px/1.6 var(--body);min-height:100vh;display:flex;flex-direction:column}a{color:var(--teal);text-decoration:none}a:hover{text-decoration:underline}button,a{font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #f0b429;outline-offset:3px}
+    .container{width:100%;max-width:1180px;margin:0 auto;padding:0 24px}.site-header{position:sticky;top:0;z-index:10;background:rgba(250,250,247,.95);backdrop-filter:blur(12px);border-bottom:1px solid #e2e6eacc;box-shadow:0 4px 20px #0000000f}.site-header__inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0}.brand{font:800 1.35rem var(--display);color:var(--teal);letter-spacing:-.02em}.brand span{color:var(--coral)}.site-nav,.header-actions{display:flex;align-items:center;gap:26px}.site-nav a{font-size:.88rem;font-weight:600;color:var(--ink)}.site-nav a:hover,.site-nav a.active{color:var(--teal)}.header-actions{gap:10px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 22px;border-radius:10px;font-size:.92rem;font-weight:700;text-decoration:none;transition:.2s}.btn:hover{text-decoration:none}.btn--ghost{border:1.5px solid var(--line);color:var(--ink);background:transparent}.btn--coral{background:var(--coral);color:#fff}.nav-toggle{display:none;background:none;border:0;color:var(--ink);padding:8px}.mobile-nav{display:none;flex-direction:column;gap:12px;padding:16px 0;border-top:1px solid var(--line)}.mobile-nav.open{display:flex}.mobile-nav a{padding:8px 0;color:var(--ink)}
+    main{width:100%;max-width:1180px;margin:0 auto;padding:28px 24px 80px;flex:1}.breadcrumb{font-size:.88rem;color:var(--muted);margin:0 0 22px}.breadcrumb a{font-weight:700}.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:32px;align-items:start}.story-card,.donate-card,.trust-card{background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 10px 30px #1b24300a}.cover{height:390px;position:relative;background:#e9eeee}.cover img{width:100%;height:100%;object-fit:cover;display:block}.cover:after{content:'';position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#0007)}.chips{position:absolute;z-index:1;top:18px;left:18px;right:18px;display:flex;justify-content:space-between;gap:8px}.chip{background:#fff;color:var(--teal);font-size:.78rem;font-weight:800;padding:7px 11px;border-radius:99px;box-shadow:0 2px 8px #0002}.chip.urgent{background:#fff1ed;color:#b43c28}.story{padding:28px 32px 34px}.location{color:var(--muted);font-size:.9rem;font-weight:700}.h1{font:700 clamp(2rem,4vw,3rem)/1.13 var(--display);margin:9px 0 15px;letter-spacing:-.025em}.story-copy{font-size:1.03rem;color:#46515c;margin:0}.divider{height:1px;background:var(--line);margin:25px 0}.section-title{font:600 1.5rem var(--display);margin:0 0 10px}.verified{display:flex;gap:12px;align-items:flex-start;background:#f0f7f3;border-radius:10px;padding:15px;color:#365a48;font-size:.9rem}.verified b{display:block;color:#24513b}.side{position:sticky;top:100px;display:grid;gap:16px}.donate-card{padding:25px}.raised-label{font-size:.84rem;color:var(--muted);font-weight:700}.raised{font-size:2rem;line-height:1.2;color:var(--green);font-weight:800;letter-spacing:-.04em}.goal{color:var(--muted);font-size:.9rem;margin-top:3px}.progress{height:9px;background:#e9efeb;border-radius:99px;margin:18px 0 9px;overflow:hidden}.progress span{display:block;height:100%;background:var(--green);border-radius:99px}.pct{font-weight:800;color:var(--green);font-size:.85rem}.stats{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:19px;padding-top:15px;font-size:.84rem;color:var(--muted)}.stats strong{display:block;color:var(--ink);font-size:1.05rem}.donate{display:block;width:100%;border:0;background:var(--coral);color:#fff;text-align:center;font-weight:800;padding:14px;border-radius:9px;margin-top:21px;cursor:pointer}.donate:hover{background:#d14a34;text-decoration:none}.share{width:100%;margin-top:10px;padding:11px;border:1px solid var(--line);background:#fff;border-radius:9px;color:var(--teal);font-weight:800;cursor:pointer}.trust-card{padding:18px 20px;font-size:.86rem;color:var(--muted)}.trust-card strong{display:block;color:var(--ink);margin-bottom:4px}.notice{max-width:700px;margin:70px auto;text-align:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:48px 28px}.notice h1{font:700 2rem var(--display);margin:0 0 10px}.notice p{color:var(--muted)}.notice a{display:inline-block;margin-top:10px;font-weight:800}
+    .site-footer{margin-top:auto;background:#fff;padding:30px 0;font-size:.84rem;color:var(--muted)}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer-links{display:flex;gap:20px;flex-wrap:wrap}.footer-links a{color:var(--teal)}
+    .donate-card{padding:28px;border-radius:18px;box-shadow:0 16px 40px rgba(27,36,48,.09)}.donate-card:before{content:'Verified fundraiser';display:inline-flex;align-items:center;background:#edf6f0;color:#2e7d5b;border-radius:99px;padding:6px 11px;font-size:.74rem;font-weight:800;margin-bottom:17px}.raised-label{font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.raised{font:700 2.25rem/1.15 var(--display);margin:6px 0}.goal{font-size:.88rem}.progress{height:10px;margin:20px 0 8px}.pct{font-size:.82rem}.stats{gap:12px;border:0;background:#f7f9f7;border-radius:12px;padding:14px;margin-top:18px;color:var(--muted)}.stats>div{flex:1}.stats>div+div{border-left:1px solid var(--line);padding-left:14px}.stats strong{font-size:1.1rem}.stats .days-left strong{color:#d14a34}.donate{padding:14px 16px;border-radius:10px;margin-top:20px;box-shadow:0 8px 18px rgba(232,86,62,.2)}.donate:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(209,74,52,.24)}.share{border-radius:10px}
+    .payment-backdrop{position:fixed;inset:0;z-index:100;background:rgba(27,36,48,.62);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:.2s}.payment-backdrop.open{opacity:1;visibility:visible}.payment-dialog{width:min(100%,500px);max-height:min(92vh,760px);overflow:auto;background:#fff;border-radius:18px;box-shadow:0 24px 64px #0f5c5c40;transform:translateY(10px) scale(.98);transition:transform .2s}.payment-backdrop.open .payment-dialog{transform:translateY(0) scale(1)}.payment-head{position:relative;display:flex;align-items:center;gap:13px;padding:20px 24px;background:linear-gradient(135deg,#0f5c5c14,#f0b4291a);border-bottom:1px solid var(--line)}.payment-thumb{width:52px;height:52px;object-fit:cover;border-radius:10px}.payment-title{font:700 1.12rem var(--display);margin:0 36px 3px 0}.payment-sub{font-size:.8rem;color:var(--green);font-weight:700}.payment-close{position:absolute;right:16px;top:15px;width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--muted);font-size:1.3rem;cursor:pointer}.payment-body{padding:23px 24px}.payment-label{display:block;margin-bottom:10px;font-size:.86rem;font-weight:800}.payment-presets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}.payment-preset{padding:10px 4px;border:1.5px solid var(--line);background:#fff;border-radius:9px;color:var(--ink);font-weight:800;cursor:pointer}.payment-preset:hover,.payment-preset.active{border-color:var(--teal);background:#0f5c5c0d;color:var(--teal)}.payment-amount{position:relative;margin-bottom:17px}.payment-symbol{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-weight:800}.payment-amount input,.payment-fields input{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px;font:600 .95rem var(--body);color:var(--ink)}.payment-amount input{padding-left:34px}.payment-fields{display:grid;gap:10px;margin-bottom:15px}.payment-submit{width:100%;border:0;background:var(--coral);color:#fff;padding:14px;border-radius:10px;font-weight:800;cursor:pointer}.payment-submit:hover{background:#d14a34}.payment-toast{position:fixed;z-index:110;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:99px;padding:12px 22px;font-size:.88rem;font-weight:700;transition:.25s}.payment-toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:850px){.site-nav,.header-actions{display:none}.nav-toggle{display:block}.layout{grid-template-columns:1fr}.side{position:static;grid-row:1}.cover{height:320px}}@media(max-width:560px){main{padding:20px 15px 55px}.cover{height:240px}.story{padding:22px}.donate-card{padding:20px}.h1{font-size:2.1rem}.payment-presets{grid-template-columns:repeat(2,1fr)}.payment-body{padding:20px}.payment-head{padding:17px}.payment-toast{width:calc(100% - 30px);text-align:center;border-radius:12px}}
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="container"><div class="site-header__inner"><a class="brand" href="home.html" aria-label="CrowdHeal home">Crowd<span>Heal</span></a><nav class="site-nav" aria-label="Main navigation"><a href="campaigns.html" class="active">Browse Campaigns</a><a href="home.html#how-it-works">How It Works</a><a href="create-campaign.html">Start a Fundraiser</a></nav><div class="header-actions"><a class="btn btn--ghost" href="login.html">Sign In</a><a class="btn btn--coral" href="create-campaign.html">Start a Fundraiser</a></div><button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button></div><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation"><a href="campaigns.html">Browse Campaigns</a><a href="home.html#how-it-works">How It Works</a><a href="create-campaign.html">Start a Fundraiser</a><a href="login.html">Sign In</a><a class="btn btn--coral" href="create-campaign.html">Start a Fundraiser</a></nav></div></header>
+  <main id="main"><p class="breadcrumb"><a href="campaigns.html">Campaigns</a> / Campaign details</p><div id="campaignContent" aria-live="polite"></div></main>
+  <div class="payment-backdrop" id="paymentBackdrop" aria-hidden="true"><section class="payment-dialog" role="dialog" aria-modal="true" aria-labelledby="paymentTitle"><header class="payment-head"><img class="payment-thumb" id="paymentImage" src="" alt=""/><div><h2 class="payment-title" id="paymentTitle">Donate Now</h2><div class="payment-sub" id="paymentHospital"></div></div><button class="payment-close" type="button" id="paymentClose" aria-label="Close payment form">&times;</button></header><div class="payment-body"><label class="payment-label" for="paymentAmount">Select or enter a donation amount</label><div class="payment-presets"><button type="button" class="payment-preset" data-amount="500">₹500</button><button type="button" class="payment-preset active" data-amount="1000">₹1,000</button><button type="button" class="payment-preset" data-amount="2500">₹2,500</button><button type="button" class="payment-preset" data-amount="5000">₹5,000</button></div><div class="payment-amount"><span class="payment-symbol">₹</span><input id="paymentAmount" type="number" value="1000" min="50" step="50" inputmode="numeric"/></div><div class="payment-fields"><input id="donorName" type="text" placeholder="Full name (required)" autocomplete="name" required/><input id="donorEmail" type="email" placeholder="Email address (required)" autocomplete="email" required/></div><button class="payment-submit" id="paymentSubmit" type="button">Proceed to Donate ₹1,000</button></div></section></div><div class="payment-toast" id="paymentToast" role="status" aria-live="polite"></div>
+  <script src="auth.js"></script>
+  <script src="data.js"></script>
+  <script>
+    const money = amount => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(amount);
+    const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    const id = new URLSearchParams(location.search).get('id');
+    try {
+      const locallyPublishedCampaigns = JSON.parse(localStorage.getItem('crowdhealCampaigns') || '[]');
+      if (Array.isArray(locallyPublishedCampaigns)) {
+        locallyPublishedCampaigns.forEach(item => {
+          if (!allCampaigns.some(existing => existing.id === item.id)) allCampaigns.push(item);
+        });
+      }
+      const savedDonations = JSON.parse(localStorage.getItem('crowdhealDonations') || '{}');
+      if (savedDonations && typeof savedDonations === 'object' && !Array.isArray(savedDonations)) {
+        allCampaigns.forEach(item => {
+          const total = savedDonations[item.id];
+          if (!total) return;
+          item.raised += Number(total.amount) || 0;
+          item.donors += Number(total.donors) || 0;
+        });
+      }
+    } catch (error) {
+      console.warn('Saved campaigns could not be loaded.', error);
+    }
+    const campaign = Array.isArray(allCampaigns) ? allCampaigns.find(item => item.id === id) : null;
+    const root = document.getElementById('campaignContent');
+    if (!campaign) {
+      document.title = 'Campaign Not Found — CrowdHeal';
+      root.innerHTML = '<section class="notice"><h1>Campaign not found</h1><p>This campaign link may be incomplete or out of date. Browse the current campaigns to find one to support.</p><a href="campaigns.html">Browse campaigns →</a></section>';
+    } else {
+      const pct = Math.min(Math.round(campaign.raised / campaign.goal * 100), 100);
+      const signedInUser = CrowdHealAuth.getSession();
+      const campaignOwnerEmail = String(campaign.ownerEmail || campaign.organizerEmail || '').toLowerCase();
+      const signedInName = signedInUser ? [signedInUser.firstName, signedInUser.lastName].filter(Boolean).join(' ').toLowerCase() : '';
+      const canManageCampaign = signedInUser && (campaignOwnerEmail ? campaignOwnerEmail === signedInUser.email.toLowerCase() : String(campaign.organizerName || '').toLowerCase() === signedInName);
+      const manageCampaignLink = canManageCampaign ? '<a class="share" href="dashboard.html">Manage your campaign</a>' : '';
+      document.title = `${campaign.name} — CrowdHeal`;
+      document.querySelector('meta[name="description"]').content = `${campaign.name}: ${campaign.story}`;
+      root.innerHTML = `<div class="layout">
+        <article class="story-card">
+          <div class="cover"><img src="${escapeHTML(campaign.image)}" alt="${escapeHTML(campaign.alt)}"/><div class="chips"><span class="chip">${escapeHTML(campaign.category)}</span><span class="chip urgent">${escapeHTML(campaign.urgentBadge)}</span></div></div>
+          <div class="story"><div class="location">⌖ &nbsp;${escapeHTML(campaign.location)}</div><h1 class="h1">${escapeHTML(campaign.name)}</h1><p class="story-copy">${escapeHTML(campaign.story)}</p>
+            <div class="divider"></div><h2 class="section-title">About this fundraiser</h2><p class="story-copy">Your support helps cover treatment and care at ${escapeHTML(campaign.hospital)}. Every contribution brings this family closer to the care they need.</p>
+            <div class="divider"></div><div class="verified"><span aria-hidden="true">✓</span><div><b>Campaign details available</b>Hospital: ${escapeHTML(campaign.hospital)}. Please review the fundraiser information before donating.</div></div>
+          </div>
+        </article>
+        <aside class="side" aria-label="Fundraising progress"><section class="donate-card"><div class="raised-label">Raised so far</div><div class="raised" id="raisedAmount">${money(campaign.raised)}</div><div class="goal">of ${money(campaign.goal)} goal</div><div class="progress" role="progressbar" aria-label="Funding progress" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><span id="progressFill" style="width:${pct}%"></span></div><div class="pct" id="progressText">${pct}% funded</div><div class="stats"><div><strong id="donorCount">${campaign.donors.toLocaleString('en-IN')}</strong>donors</div><div class="days-left"><strong>${campaign.daysLeft}</strong>days left</div></div>${manageCampaignLink}<button class="donate" id="supportCampaign" type="button">Support this campaign</button><button class="share" type="button" id="shareButton">Share campaign</button></section><section class="trust-card"><strong>Every contribution matters</strong>Share this fundraiser with friends and family to help it reach more people.</section></aside>
+      </div>`;
+      document.getElementById('shareButton').addEventListener('click', async () => {
+        const shareData = {title: campaign.name, text: `Support ${campaign.name} on CrowdHeal`, url: location.href};
+        try { if (navigator.share) await navigator.share(shareData); else { await navigator.clipboard.writeText(location.href); alert('Campaign link copied.'); } }
+        catch (error) { if (error.name !== 'AbortError') alert('Unable to share this link right now.'); }
+      });
+      const paymentBackdrop = document.getElementById('paymentBackdrop');
+      const paymentAmount = document.getElementById('paymentAmount');
+      const paymentSubmit = document.getElementById('paymentSubmit');
+      const paymentToast = document.getElementById('paymentToast');
+      const presetButtons = document.querySelectorAll('.payment-preset');
+      const donorNameInput = document.getElementById('donorName');
+      const donorEmailInput = document.getElementById('donorEmail');
+      let selectedAmount = 1000;
+      const updatePaymentAmount = amount => {
+        selectedAmount = Number(amount) || 0;
+        paymentAmount.value = selectedAmount || '';
+        paymentSubmit.textContent = `Proceed to Donate ${money(selectedAmount)}`;
+        presetButtons.forEach(button => button.classList.toggle('active', Number(button.dataset.amount) === selectedAmount));
+      };
+      const closePayment = () => {
+        paymentBackdrop.classList.remove('open');
+        paymentBackdrop.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      };
+      document.getElementById('supportCampaign').addEventListener('click', () => {
+        document.getElementById('paymentImage').src = campaign.image;
+        document.getElementById('paymentImage').alt = campaign.alt;
+        document.getElementById('paymentTitle').textContent = campaign.name;
+        document.getElementById('paymentHospital').textContent = `${campaign.hospital} · Verified`;
+        updatePaymentAmount(1000);
+        paymentBackdrop.classList.add('open');
+        paymentBackdrop.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        paymentAmount.focus();
+      });
+      document.getElementById('paymentClose').addEventListener('click', closePayment);
+      paymentBackdrop.addEventListener('click', event => { if (event.target === paymentBackdrop) closePayment(); });
+      presetButtons.forEach(button => button.addEventListener('click', () => updatePaymentAmount(button.dataset.amount)));
+      paymentAmount.addEventListener('input', () => {
+        selectedAmount = Number(paymentAmount.value) || 0;
+        paymentSubmit.textContent = `Proceed to Donate ${money(selectedAmount)}`;
+        presetButtons.forEach(button => button.classList.toggle('active', Number(button.dataset.amount) === selectedAmount));
+      });
+      donorNameInput.addEventListener('input', () => donorNameInput.setCustomValidity(''));
+      paymentSubmit.addEventListener('click', () => {
+        if (!paymentAmount.reportValidity()) return;
+        if (selectedAmount < 50) { paymentAmount.focus(); return; }
+        const donorName = donorNameInput.value.trim();
+        if (!donorName) { donorNameInput.setCustomValidity('Please enter your name.'); donorNameInput.reportValidity(); return; }
+        donorNameInput.setCustomValidity('');
+        if (!donorEmailInput.reportValidity()) return;
+        let donationTotals;
+        try {
+          donationTotals = JSON.parse(localStorage.getItem('crowdhealDonations') || '{}');
+          if (!donationTotals || typeof donationTotals !== 'object' || Array.isArray(donationTotals)) donationTotals = {};
+          const campaignTotal = donationTotals[campaign.id] || {amount: 0, donors: 0, recent: []};
+          campaignTotal.amount = (Number(campaignTotal.amount) || 0) + selectedAmount;
+          campaignTotal.donors = (Number(campaignTotal.donors) || 0) + 1;
+          campaignTotal.recent = Array.isArray(campaignTotal.recent) ? campaignTotal.recent : [];
+          campaignTotal.recent.push({name: donorName, amount: selectedAmount, date: new Date().toISOString()});
+          campaignTotal.recent = campaignTotal.recent.slice(-5);
+          donationTotals[campaign.id] = campaignTotal;
+          localStorage.setItem('crowdhealDonations', JSON.stringify(donationTotals));
+        } catch (error) {
+          alert('Your donation could not be saved. Please check browser storage and try again.');
+          return;
+        }
+        campaign.raised += selectedAmount;
+        campaign.donors += 1;
+        const updatedPct = Math.min(Math.round(campaign.raised / campaign.goal * 100), 100);
+        document.getElementById('raisedAmount').textContent = money(campaign.raised);
+        document.getElementById('donorCount').textContent = campaign.donors.toLocaleString('en-IN');
+        document.getElementById('progressFill').style.width = `${updatedPct}%`;
+        document.getElementById('progressFill').parentElement.setAttribute('aria-valuenow', updatedPct);
+        document.getElementById('progressText').textContent = `${updatedPct}% funded`;
+        closePayment();
+        paymentToast.textContent = `Thank you, ${donorName}! Your ${money(selectedAmount)} gift was received.`;
+        paymentToast.classList.add('show');
+        window.setTimeout(() => paymentToast.classList.remove('show'), 3200);
+      });
+      document.addEventListener('keydown', event => { if (event.key === 'Escape' && paymentBackdrop.classList.contains('open')) closePayment(); });
+    }
+  </script>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="home.html">Crowd<span>Heal</span></a><div class="footer-links"><span>Protected by <a href="#">CrowdHeal</a></span><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="login.html">Sign In</a><a href="create-campaign.html">Start a Fundraiser</a></div><span>&copy; 2026 CrowdHeal Inc. All rights reserved.</span></div></footer>
+  <script>const navToggle=document.getElementById('navToggle');navToggle.addEventListener('click',()=>{const open=document.getElementById('mobileNav').classList.toggle('open');navToggle.setAttribute('aria-expanded',open)});</script>
+</body>
+</html>

@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browse verified medical campaigns on CrowdHeal. Give hope to patients fighting cancer, organ failure, heart disease, and medical emergencies." />
+  <title>Browse Campaigns — CrowdHeal Medical Crowdfunding</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary:      #0F5C5C;
+      --primary-dark:  #0a4545;
+      --coral:        #E8563E;
+      --coral-hover:  #d14a34;
+      --gold:         #F0B429;
+      --bg:           #FAFAF7;
+      --charcoal:     #1B2430;
+      --funded:       #2E7D5B;
+      --muted:        #6b7786;
+      --border:       #e2e6ea;
+      --font-display: 'Fraunces', serif;
+      --font-body:    'Manrope', sans-serif;
+      --section-pad:  clamp(40px, 6vw, 80px);
+      --container:    1180px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--charcoal);
+      background:
+        radial-gradient(ellipse at 30% 0%, rgba(15,92,92,.12) 0%, transparent 75%),
+        radial-gradient(ellipse at 90% 100%, rgba(240,180,41,.08) 0%, transparent 75%),
+        var(--bg);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ══════════ Brand ══════════ */
+    .brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: var(--primary);
+      letter-spacing: -.02em;
+    }
+    .brand span { color: var(--coral); }
+
+    /* ══════════ Buttons ══════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: .92rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: background .2s, box-shadow .2s, transform .1s, border-color .2s, color .2s;
+      text-decoration: none;
+    }
+    .btn:hover { text-decoration: none; }
+    .btn:active { transform: scale(.985); }
+
+    .btn--coral {
+      background: var(--coral);
+      color: #fff;
+    }
+    .btn--coral:hover {
+      background: var(--coral-hover);
+      box-shadow: 0 6px 20px rgba(232,86,62,.28);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+    }
+    .btn--outline:hover {
+      background: rgba(15,92,92,.06);
+      box-shadow: 0 2px 8px rgba(15,92,92,.08);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--primary);
+      border: 1.5px solid var(--border);
+      padding: 9px 18px;
+      font-size: .88rem;
+    }
+    .btn--ghost:hover {
+      border-color: var(--primary);
+    }
+
+    /* ══════════ Header ══════════ */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250,250,247,.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(226,230,234,.8);
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    }
+
+    .site-header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 0;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .site-nav a {
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      transition: color .2s;
+    }
+    .site-nav a:hover,
+    .site-nav a.active {
+      color: var(--primary);
+    }
+    .site-nav a.active {
+      position: relative;
+    }
+    .site-nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .site-header__actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: var(--charcoal);
+    }
+    .nav-toggle svg { width: 24px; height: 24px; }
+
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: .92rem;
+      color: var(--charcoal);
+      padding: 8px 0;
+    }
+
+    /* ══════════ Page Hero & Controls ══════════ */
+    .page-hero {
+      padding: 48px 0 28px;
+      text-align: center;
+    }
+    .page-hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--primary);
+      background: rgba(15,92,92,.08);
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .page-hero__badge svg { width: 14px; height: 14px; color: var(--funded); }
+
+    .page-hero__title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2rem, 3.8vw, 2.75rem);
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      margin-bottom: 12px;
+    }
+    .page-hero__title em {
+      font-style: normal;
+      color: var(--coral);
+    }
+    .page-hero__desc {
+      font-size: 1.02rem;
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ══════════ Filter Bar ══════════ */
+    .filter-bar {
+      margin: 32px 0 24px;
+      background: #ffffff;
+      padding: 16px 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(15,92,92,.06), 0 1px 3px rgba(0,0,0,.03);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .filter-bar__sort {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .filter-bar__search { flex: 1; min-width: 220px; }
+    .filter-bar__search input {
+      width: 100%;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 13px;
+      font-family: var(--font-body);
+      font-size: .88rem;
+      color: var(--charcoal);
+    }
+    .filter-bar__search input:focus { outline: 0; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15,92,92,.1); }
+    .filter-bar__sort label {
+      font-size: .84rem;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .filter-bar__select {
+      background: #f6f8fa;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-family: var(--font-body);
+      font-size: .86rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    .filter-bar__select:focus {
+      border-color: var(--primary);
+    }
+
+    /* Category Chips */
+    .category-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 28px;
+      scrollbar-width: thin;
+    }
+    .category-pills::-webkit-scrollbar { height: 4px; }
+    .category-pills::-webkit-scrollbar-thumb { background: #d0d7de; border-radius: 4px; }
+
+    .cat-pill {
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--charcoal);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: .84rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cat-pill:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+    .cat-pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 3px 10px rgba(15,92,92,.22);
+    }
+    .cat-pill__count {
+      font-size: .72rem;
+      padding: 2px 6px;
+      border-radius: 20px;
+      background: rgba(0,0,0,.08);
+    }
+    .cat-pill.active .cat-pill__count {
+      background: rgba(255,255,255,.25);
+    }
+
+    /* ══════════ Results Header ══════════ */
+    .results-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      font-size: .88rem;
+      color: var(--muted);
+    }
+    .results-meta strong {
+      color: var(--charcoal);
+    }
+
+    /* ══════════ Campaign Grid ══════════ */
+    .campaigns-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-bottom: 64px;
+    }
+
+    .campaign-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 20px rgba(15,92,92,.06), 0 1px 3px rgba(0,0,0,.03);
+      border: 1px solid rgba(226,230,234,.7);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+      position: relative;
+    }
+    .campaign-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 36px rgba(15,92,92,.12), 0 2px 8px rgba(0,0,0,.04);
+      border-color: rgba(15,92,92,.25);
+    }
+
+    .campaign-card__img-box {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: #e9ecef;
+    }
+    .campaign-card__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .campaign-card:hover .campaign-card__img {
+      transform: scale(1.04);
+    }
+
+    .campaign-card__tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(4px);
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+
+    .campaign-card__hospital-badge {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(15,36,48,.82);
+      backdrop-filter: blur(4px);
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: .72rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .campaign-card__hospital-badge svg {
+      width: 12px;
+      height: 12px;
+      color: var(--gold);
+    }
+
+    .campaign-card__urgency-pill {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(232,86,62,.92);
+      color: #fff;
+      padding: 4px 9px;
+      border-radius: 100px;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    .campaign-card__body {
+      padding: 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .campaign-card__location {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .campaign-card__location svg {
+      width: 14px;
+      height: 14px;
+      color: var(--muted);
+    }
+
+    .campaign-card__title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.12rem;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      color: var(--charcoal);
+    }
+
+    .campaign-card__story {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 18px;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 100px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .progress-bar__fill {
+      height: 100%;
+      background: var(--funded);
+      border-radius: 100px;
+      transition: width .8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .campaign-card__amounts {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      font-size: .82rem;
+      margin-bottom: 6px;
+    }
+    .campaign-card__amounts strong {
+      color: var(--funded);
+      font-size: 1.05rem;
+    }
+
+    .campaign-card__meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: .78rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .campaign-card__meta span:last-child { color: #d14a34; font-weight: 800; }
+
+    .campaign-card__actions {
+      display: flex;
+      gap: 8px;
+    }
+    .campaign-card__actions .btn {
+      flex: 1;
+    }
+    /* Empty state */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 20px;
+      background: #fff;
+      border-radius: 20px;
+      border: 1px dashed var(--border);
+    }
+    .empty-state__icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 16px;
+      color: var(--muted);
+      opacity: .6;
+    }
+    .empty-state__title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .empty-state__text {
+      color: var(--muted);
+      font-size: .92rem;
+      margin-bottom: 20px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ══════════ Trust / Guarantee Band ══════════ */
+    .trust-strip {
+      background: #fff;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 0;
+      margin-top: auto;
+    }
+    .trust-strip__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .trust-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .trust-item__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(15,92,92,.08);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .trust-item__icon svg { width: 22px; height: 22px; }
+    .trust-item__title {
+      font-weight: 700;
+      font-size: .96rem;
+      margin-bottom: 4px;
+      color: var(--charcoal);
+    }
+    .trust-item__desc {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ══════════ Site Footer ══════════ */
+    .site-footer {
+      background: #fff;
+      padding: 36px 0;
+      font-size: .84rem;
+      color: var(--muted);
+    }
+    .site-footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .site-footer__links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .site-footer__links a {
+      color: var(--primary);
+    }
+
+
+
+    /* ══════════ Responsive ══════════ */
+    @media (max-width: 1024px) {
+      .campaigns-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .trust-strip__grid { grid-template-columns: 1fr; gap: 20px; }
+    }
+
+    @media (max-width: 640px) {
+      .site-nav,
+      .site-header__actions { display: none; }
+      .nav-toggle { display: block; }
+      .campaigns-grid { grid-template-columns: 1fr; }
+      .filter-bar { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="site-header__inner">
+        <a href="home.html" class="brand" aria-label="CrowdHeal home">Crowd<span>Heal</span></a>
+
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="campaigns.html" class="active">Browse Campaigns</a>
+          <a href="home.html#how-it-works">How It Works</a>
+          <a href="create-campaign.html">Start a Fundraiser</a>
+        </nav>
+
+        <div class="site-header__actions">
+          <a href="login.html" class="btn btn--ghost">Sign In</a>
+          <a href="create-campaign.html" class="btn btn--coral">Start a Fundraiser</a>
+        </div>
+
+        <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" id="navToggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+        <a href="campaigns.html" style="color:var(--primary); font-weight:700">Browse Campaigns</a>
+        <a href="home.html#how-it-works">How It Works</a>
+        <a href="create-campaign.html">Start a Fundraiser</a>
+        <a href="login.html">Sign In</a>
+        <a href="create-campaign.html" class="btn btn--coral" style="margin-top:8px">Start a Fundraiser</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="page-hero__badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        100% Hospital Verified Medical Campaigns
+      </div>
+      <h1 class="page-hero__title">Support a <em>life-saving treatment</em> today</h1>
+      <p class="page-hero__desc">
+        Every rupee goes directly towards hospital bills, surgeries, and critical medicines. Choose a story, give what you can, and be the miracle a family prays for.
+      </p>
+
+      <!-- Filter Toolbar -->
+      <div class="filter-bar">
+        <div class="filter-bar__search"><input id="campaignSearch" type="search" placeholder="Search campaigns, hospitals, or treatments…" aria-label="Search campaigns" /></div>
+        <div class="filter-bar__sort">
+          <label for="sortSelect">Sort By:</label>
+          <select id="sortSelect" class="filter-bar__select">
+            <option value="urgent">Most Urgent (Fewest Days Left)</option>
+            <option value="popular">Most Donors</option>
+            <option value="raised-high">Highest Amount Raised</option>
+            <option value="goal-percent">Closest to Goal</option>
+            <option value="newest">Newest Fundraisers</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Cause Category Pills -->
+      <div class="category-pills" id="categoryPills">
+        <button class="cat-pill active" data-category="all">
+          <span>All Campaigns</span>
+          <span class="cat-pill__count" id="countAll">8</span>
+        </button>
+        <button class="cat-pill" data-category="Cancer">
+          <span>Cancer & Oncology</span>
+          <span class="cat-pill__count" data-count-category="Cancer">2</span>
+        </button>
+        <button class="cat-pill" data-category="Transplant">
+          <span>Organ Transplants</span>
+          <span class="cat-pill__count" data-count-category="Transplant">2</span>
+        </button>
+        <button class="cat-pill" data-category="Surgery">
+          <span>Heart & Surgery</span>
+          <span class="cat-pill__count" data-count-category="Surgery">1</span>
+        </button>
+        <button class="cat-pill" data-category="Emergency">
+          <span>Emergency & ICU</span>
+          <span class="cat-pill__count" data-count-category="Emergency">1</span>
+        </button>
+        <button class="cat-pill" data-category="Pediatric">
+          <span>Child & NICU Care</span>
+          <span class="cat-pill__count" data-count-category="Pediatric">2</span>
+        </button>
+        <button class="cat-pill" data-category="Other"><span>Other</span><span class="cat-pill__count" data-count-category="Other">0</span></button>
+      </div>
+    </section>
+
+    <!-- Results Status Meta -->
+    <div class="results-meta">
+      <div>
+        Showing <strong id="visibleCount">8</strong> verified medical fundraisers
+      </div>
+    </div>
+
+    <!-- Campaigns Listing Grid -->
+    <section class="campaigns-grid" id="campaignsGrid" aria-label="Campaigns list">
+      <!-- Rendered dynamically by JavaScript -->
+    </section>
+  </main>
+
+  <!-- Trust Guarantee Strip -->
+  <section class="trust-strip">
+    <div class="container">
+      <div class="trust-strip__grid">
+        <div class="trust-item">
+          <div class="trust-item__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <h3 class="trust-item__title">100% Hospital Verified</h3>
+            <p class="trust-item__desc">Every medical quotation and diagnosis is cross-verified with treating doctors and partner hospitals before publishing.</p>
+          </div>
+        </div>
+
+        <div class="trust-item">
+          <div class="trust-item__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div>
+            <h3 class="trust-item__title">Zero Platform Fee</h3>
+            <p class="trust-item__desc">We charge 0% commission on the first medical fundraiser so maximum financial help reaches the patient's bedside.</p>
+          </div>
+        </div>
+
+        <div class="trust-item">
+          <div class="trust-item__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div>
+            <h3 class="trust-item__title">Direct Hospital Payouts</h3>
+            <p class="trust-item__desc">Funds are disbursed directly into hospital escrow accounts to guarantee every donation fulfills real medical bills.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__inner">
+        <a href="home.html" class="brand">Crowd<span>Heal</span></a>
+        <div class="site-footer__links">
+          <span>Protected by <a href="#">CrowdHeal</a></span>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="login.html">Sign In</a>
+          <a href="create-campaign.html">Start a Fundraiser</a>
+        </div>
+        <p class="site-footer__copy">&copy; 2026 CrowdHeal Inc. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="auth.js"></script>
+  <script src="data.js"></script>
+  <script>
+    try {
+      const locallyPublishedCampaigns = JSON.parse(localStorage.getItem('crowdhealCampaigns') || '[]');
+      if (Array.isArray(locallyPublishedCampaigns)) {
+        locallyPublishedCampaigns.forEach(function(campaign) {
+          if (!allCampaigns.some(function(existing) { return existing.id === campaign.id; })) allCampaigns.push(campaign);
+        });
+      }
+      const savedDonations = JSON.parse(localStorage.getItem('crowdhealDonations') || '{}');
+      if (savedDonations && typeof savedDonations === 'object' && !Array.isArray(savedDonations)) {
+        allCampaigns.forEach(function(campaign) {
+          const total = savedDonations[campaign.id];
+          if (!total) return;
+          campaign.raised += Number(total.amount) || 0;
+          campaign.donors += Number(total.donors) || 0;
+        });
+      }
+    } catch (error) {
+      console.warn('Saved campaigns could not be loaded.', error);
+    }
+
+    /* ══════════ Utility Formatters ══════════ */
+    function formatINR(amount) {
+      if (amount >= 10000000) return '₹' + (amount / 10000000).toFixed(1) + 'Cr';
+      if (amount >= 100000) return '₹' + (amount / 100000).toFixed(1) + 'L';
+      if (amount >= 1000) return '₹' + (amount / 1000).toFixed(0) + 'K';
+      return '₹' + Number(amount).toLocaleString('en-IN');
+    }
+
+    function progressPct(raised, goal) {
+      return Math.min(Math.round((raised / goal) * 100), 100);
+    }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, function(char) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char];
+      });
+    }
+
+    /* ══════════ Card Rendering ══════════ */
+    function createCampaignCard(c) {
+      const pct = progressPct(c.raised, c.goal);
+      return `
+        <article class="campaign-card" id="card-${escapeHTML(c.id)}" data-id="${escapeHTML(c.id)}">
+          <div class="campaign-card__img-box">
+            <img src="${escapeHTML(c.image)}" alt="${escapeHTML(c.alt)}" class="campaign-card__img" loading="lazy" />
+            <span class="campaign-card__tag">${escapeHTML(c.category)}</span>
+            <span class="campaign-card__urgency-pill">${escapeHTML(c.urgentBadge)}</span>
+            <span class="campaign-card__hospital-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              ${escapeHTML(c.hospital)}
+            </span>
+          </div>
+
+          <div class="campaign-card__body">
+            <div class="campaign-card__location">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              ${escapeHTML(c.location)}
+            </div>
+
+            <h2 class="campaign-card__title">${escapeHTML(c.name)}</h2>
+            <p class="campaign-card__story">${escapeHTML(c.story)}</p>
+
+            <div class="progress-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeHTML(c.name)} funding progress">
+              <div class="progress-bar__fill" style="width: ${pct}%"></div>
+            </div>
+
+            <div class="campaign-card__amounts">
+              <span><strong>${formatINR(c.raised)}</strong> raised</span>
+              <span>${pct}% of ${formatINR(c.goal)}</span>
+            </div>
+
+            <div class="campaign-card__meta">
+              <span>${c.donors.toLocaleString('en-IN')} donors</span>
+              <span class="days-remaining">${c.daysLeft} days remaining</span>
+            </div>
+
+            <div class="campaign-card__actions">
+              <a class="btn btn--coral" href="campaign-detail.html?id=${encodeURIComponent(c.id)}" aria-label="Support ${escapeHTML(c.name)}">Support this campaign</a>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    /* ══════════ Filtering & Sorting Logic ══════════ */
+    let activeCategory = 'all';
+    const gridEl = document.getElementById('campaignsGrid');
+    const sortSelect = document.getElementById('sortSelect');
+    const searchInput = document.getElementById('campaignSearch');
+    const visibleCountEl = document.getElementById('visibleCount');
+    const catPills = document.querySelectorAll('.cat-pill');
+
+    function renderCampaigns() {
+      const query = searchInput.value.trim().toLowerCase();
+      let list = allCampaigns.filter(function(c) {
+        const matchesCategory = activeCategory === 'all' || c.category.toLowerCase() === activeCategory.toLowerCase();
+        const searchableText = [c.name, c.story, c.location, c.hospital, c.category].join(' ').toLowerCase();
+        return matchesCategory && (!query || searchableText.includes(query));
+      });
+
+      // Sorting
+      const sortVal = sortSelect.value;
+      list.sort(function(a, b) {
+        if (sortVal === 'urgent') return a.daysLeft - b.daysLeft;
+        if (sortVal === 'popular') return b.donors - a.donors;
+        if (sortVal === 'raised-high') return b.raised - a.raised;
+        if (sortVal === 'goal-percent') return (b.raised / b.goal) - (a.raised / a.goal);
+        return 0; // default
+      });
+
+      visibleCountEl.textContent = list.length;
+      document.getElementById('countAll').textContent = allCampaigns.length;
+      document.querySelectorAll('[data-count-category]').forEach(function(countEl) {
+        const category = countEl.dataset.countCategory.toLowerCase();
+        countEl.textContent = allCampaigns.filter(c => c.category.toLowerCase() === category).length;
+      });
+
+      if (list.length === 0) {
+        gridEl.innerHTML = `
+          <div class="empty-state">
+            <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+            <h3 class="empty-state__title">No fundraisers found</h3>
+            <p class="empty-state__text">We couldn't find any medical campaigns in this category. Try selecting another category.</p>
+            <button type="button" class="btn btn--outline" onclick="resetFilters()">Reset All Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      gridEl.innerHTML = list.map(createCampaignCard).join('');
+    }
+
+    function resetFilters() {
+      activeCategory = 'all';
+      catPills.forEach(p => p.classList.remove('active'));
+      document.querySelector('.cat-pill[data-category="all"]').classList.add('active');
+      sortSelect.value = 'urgent';
+      searchInput.value = '';
+      renderCampaigns();
+    }
+
+    // Category pill click
+    catPills.forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        catPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeCategory = pill.dataset.category;
+        renderCampaigns();
+      });
+    });
+
+    sortSelect.addEventListener('change', renderCampaigns);
+    searchInput.addEventListener('input', renderCampaigns);
+
+    /* Mobile Nav Toggle */
+    const navToggle = document.getElementById('navToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    navToggle.addEventListener('click', function() {
+      const open = mobileNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open);
+    });
+
+    renderCampaigns();
+
+  </script>
+</body>
+</html>

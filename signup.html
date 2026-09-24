@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — CrowdHeal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary:      #0F5C5C;
+      --primary-dark:  #0a4545;
+      --coral:        #E8563E;
+      --coral-hover:  #d14a34;
+      --gold:         #F0B429;
+      --bg:           #FAFAF7;
+      --charcoal:     #1B2430;
+      --funded:       #2E7D5B;
+      --font-display: 'Fraunces', serif;
+      --font-body:    'Manrope', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--charcoal);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background:
+        radial-gradient(ellipse at 80% 0%, rgba(232,86,62,.05) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 100%, rgba(15,92,92,.06) 0%, transparent 60%),
+        var(--bg);
+    }
+
+    a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
+
+    /* ══════════ Card ══════════ */
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 32px rgba(15,92,92,.07), 0 1px 4px rgba(0,0,0,.04);
+      padding: 32px 36px 28px;
+      display: flex;
+      flex-direction: column;
+      animation: riseIn .5s ease-out both;
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Brand ── */
+    .card__brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.45rem;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 16px;
+      letter-spacing: -.02em;
+    }
+    .card__brand span { color: var(--coral); }
+
+    /* ── Header ── */
+    .card__title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .card__sub {
+      text-align: center;
+      font-size: .85rem;
+      color: #6b7786;
+      margin-bottom: 20px;
+    }
+    .card__sub a { color: var(--coral); }
+
+    /* ── Social row ── */
+    .social-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .social-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 0;
+      background: #fff;
+      border: 1.5px solid #e2e6ea;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: .84rem;
+      color: var(--charcoal);
+      cursor: pointer;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .social-btn:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(15,92,92,.08);
+    }
+    .social-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      font-size: .72rem;
+      font-weight: 600;
+      color: #a3aab4;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #eaecf0;
+    }
+
+    /* ── Fields ── */
+    .field { display: flex; flex-direction: column; margin-bottom: 14px; }
+
+    .field label {
+      font-size: .78rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .field input {
+      padding: 12px 14px;
+      border: 1.5px solid #dfe3e8;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: .9rem;
+      color: var(--charcoal);
+      background: var(--bg);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .field input::placeholder { color: #b3bac4; }
+    .field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15,92,92,.1);
+      background: #fff;
+    }
+
+    /* Name row — two fields side by side */
+    .name-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .name-row .field {
+      flex: 1;
+      max-width: 180px;
+    }
+    .name-row .field label,
+    .name-row .field input {
+      text-align: center;
+    }
+
+    /* Password wrapper */
+    .pw-wrap { position: relative; display: flex; }
+    .pw-wrap input { flex: 1; padding-right: 44px; }
+
+    .pw-toggle {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      cursor: pointer;
+      color: #a3aab4;
+      display: flex; padding: 4px;
+      transition: color .2s;
+    }
+    .pw-toggle:hover { color: var(--primary); }
+    .pw-toggle svg { width: 18px; height: 18px; }
+
+    /* Password strength bar */
+    .pw-strength {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+    }
+    .pw-strength__bar {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: #eaecf0;
+      transition: background .3s;
+    }
+    .pw-strength__bar.active.weak   { background: var(--coral); }
+    .pw-strength__bar.active.fair   { background: var(--gold); }
+    .pw-strength__bar.active.strong { background: var(--funded); }
+
+    .pw-strength__label {
+      font-size: .72rem;
+      font-weight: 600;
+      margin-top: 4px;
+      min-height: 16px;
+      color: #8e99a4;
+    }
+
+    /* ── Terms checkbox ── */
+    .terms-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin: 20px 0 24px;
+      font-size: .8rem;
+      color: #5a6572;
+      line-height: 1.45;
+    }
+    .terms-row input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 16px; height: 16px;
+      margin-top: 1px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .terms-row a { color: var(--primary); }
+
+    /* ── CTA ── */
+    .btn-submit {
+      width: 100%;
+      padding: 13px;
+      background: var(--coral);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, box-shadow .2s, transform .1s;
+    }
+    .btn-submit:hover {
+      background: var(--coral-hover);
+      box-shadow: 0 6px 20px rgba(232,86,62,.28);
+    }
+    .btn-submit:active { transform: scale(.985); }
+
+    /* ── Footer ── */
+    .card__footer {
+      text-align: center;
+      margin-top: 22px;
+      font-size: .82rem;
+      color: #6b7786;
+    }
+    .card__footer a { color: var(--primary); }
+
+    /* ══════════ Responsive ══════════ */
+    @media (max-width: 480px) {
+      .card { padding: 28px 22px 24px; }
+      .card__title { font-size: 1.3rem; }
+      .social-row { flex-direction: column; }
+      .name-row { flex-direction: column; gap: 0; align-items: center; }
+      .name-row .field { max-width: 100%; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Brand -->
+    <div class="card__brand">Crowd<span>Heal</span></div>
+
+    <!-- Header -->
+    <h1 class="card__title">Create your account</h1>
+    <p class="card__sub">Already have an account? <a href="login.html" id="loginLink">Sign in</a></p>
+
+    <!-- Social Sign-up -->
+    <div class="social-row">
+      <button class="social-btn" type="button">
+        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Google
+      </button>
+      <button class="social-btn" type="button">
+        <svg viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047v-2.66c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.971H15.83c-1.491 0-1.956.93-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+        Facebook
+      </button>
+    </div>
+
+    <div class="divider">or</div>
+
+    <!-- Form -->
+    <form id="signupForm" action="#" method="POST" novalidate>
+      <div class="name-row">
+        <div class="field">
+          <label for="firstName">First name</label>
+          <input type="text" id="firstName" name="firstName" placeholder="Jane" required autocomplete="given-name" />
+        </div>
+        <div class="field">
+          <label for="lastName">Last name</label>
+          <input type="text" id="lastName" name="lastName" placeholder="Doe" required autocomplete="family-name" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="password" name="password" placeholder="Min. 8 characters" required autocomplete="new-password" minlength="8" />
+          <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePw('password','eyeIcon')">
+            <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="pw-strength" id="strengthBars">
+          <div class="pw-strength__bar"></div>
+          <div class="pw-strength__bar"></div>
+          <div class="pw-strength__bar"></div>
+          <div class="pw-strength__bar"></div>
+        </div>
+        <div class="pw-strength__label" id="strengthLabel"></div>
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirm password</label>
+        <div class="pw-wrap">
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required autocomplete="new-password" />
+          <button type="button" class="pw-toggle" aria-label="Show password" onclick="togglePw('confirmPassword','eyeIcon2')">
+            <svg id="eyeIcon2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="terms-row">
+        <input type="checkbox" id="terms" name="terms" required />
+        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+      </div>
+
+      <p id="authMessage" role="status" aria-live="polite" style="display:none;color:#b43c28;background:#fff0ed;border-radius:8px;padding:10px 12px;margin:0 0 14px;font-size:.85rem"></p>
+      <button type="submit" class="btn-submit">Create Account</button>
+    </form>
+
+    <p class="card__footer">
+      Protected by <a href="#">CrowdHeal</a> · <a href="#">Privacy</a> · <a href="#">Terms</a>
+    </p>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    /* Toggle password visibility */
+    function togglePw(inputId, iconId) {
+      const inp = document.getElementById(inputId);
+      const ico = document.getElementById(iconId);
+      const show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      ico.innerHTML = show
+        ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>'
+        : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    }
+
+    /* Password strength meter */
+    const pwInput = document.getElementById('password');
+    const bars    = document.querySelectorAll('#strengthBars .pw-strength__bar');
+    const label   = document.getElementById('strengthLabel');
+
+    pwInput.addEventListener('input', () => {
+      const v = pwInput.value;
+      let score = 0;
+      if (v.length >= 8) score++;
+      if (/[A-Z]/.test(v)) score++;
+      if (/[0-9]/.test(v)) score++;
+      if (/[^A-Za-z0-9]/.test(v)) score++;
+
+      const levels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+      const cls    = ['', 'weak', 'fair', 'strong', 'strong'];
+
+      bars.forEach((bar, i) => {
+        bar.classList.remove('active', 'weak', 'fair', 'strong');
+        if (i < score) {
+          bar.classList.add('active', cls[score]);
+        }
+      });
+
+      label.textContent = v.length ? levels[score] : '';
+      label.style.color = { '': '', 'Weak': '#E8563E', 'Fair': '#F0B429', 'Good': '#2E7D5B', 'Strong': '#2E7D5B' }[levels[score]] || '';
+    });
+
+    /* Form submit */
+    const returnTarget = CrowdHealAuth.getReturnTarget();
+    if (returnTarget === 'create-campaign.html' || returnTarget.startsWith('create-campaign.html?')) {
+      document.getElementById('loginLink').href = `login.html?returnTo=${encodeURIComponent(returnTarget)}`;
+      document.querySelector('.card__title').textContent = returnTarget.includes('?edit=') ? 'Create an account to edit this fundraiser' : 'Create an account to start your fundraiser';
+    } else if (returnTarget === 'dashboard.html') {
+      document.getElementById('loginLink').href = 'login.html?returnTo=dashboard.html';
+      document.querySelector('.card__title').textContent = 'Create an account to manage fundraisers';
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const message = document.getElementById('authMessage');
+      message.style.display = 'none';
+      const fn   = document.getElementById('firstName').value.trim();
+      const ln   = document.getElementById('lastName').value.trim();
+      const em   = document.getElementById('email').value.trim();
+      const pw   = document.getElementById('password').value;
+      const cpw  = document.getElementById('confirmPassword').value;
+      const agreed = document.getElementById('terms').checked;
+
+      if (!fn || !ln || !em || !pw || !cpw) { alert('Please fill in all fields.'); return; }
+      if (pw.length < 8)   { alert('Password must be at least 8 characters.'); return; }
+      if (pw !== cpw)       { alert('Passwords do not match.'); return; }
+      if (!agreed)          { alert('Please agree to the Terms and Privacy Policy.'); return; }
+      try {
+        await CrowdHealAuth.signUp({firstName: fn, lastName: ln, email: em, password: pw});
+        window.location.href = returnTarget;
+      } catch (error) {
+        message.textContent = error.message || 'Unable to create your account. Please try again.';
+        message.style.display = 'block';
+      }
+    });
+  </script>
+
+</body>
+</html>
