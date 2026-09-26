@@ -15,7 +15,7 @@
 
   function getSession() {
     try {
-      const session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
+      const session = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
       return session && typeof session.email === 'string' ? session : null;
     } catch (_) {
       return null;
@@ -24,13 +24,13 @@
 
   function setSession(user) {
     const session = {email: user.email, firstName: user.firstName, lastName: user.lastName};
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     return session;
   }
 
   function getTemporaryUsers() {
     try {
-      const users = JSON.parse(sessionStorage.getItem(TEMP_USERS_KEY) || '[]');
+      const users = JSON.parse(localStorage.getItem(TEMP_USERS_KEY) || '[]');
       return Array.isArray(users) ? users : [];
     } catch (_) {
       return [];
@@ -82,13 +82,13 @@
     };
     const users = getTemporaryUsers();
     users.push(user);
-    sessionStorage.setItem(TEMP_USERS_KEY, JSON.stringify(users));
+    localStorage.setItem(TEMP_USERS_KEY, JSON.stringify(users));
     return setSession(user);
   }
 
   function logout(event) {
     if (event) event.preventDefault();
-    sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(SESSION_KEY);
     location.href = 'home.html';
   }
 
