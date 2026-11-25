@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import QRCode from 'qrcode';
 import { allCampaigns } from '../data/campaigns';
 import { getAllCampaigns, getLocalCampaigns, isPublicCampaign, getDonations, saveDonations, money, percent } from '../utils/helpers';
 import { useSession } from '../hooks/useSession';
@@ -14,6 +15,7 @@ export default function CampaignDetail() {
   const [campaign, setCampaign] = useState(null);
   const [notFound, setNotFound] = useState(false);
   const [previewOnly, setPreviewOnly] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
 
   // Donation state
   const [modalOpen, setModalOpen] = useState(false);
@@ -50,6 +52,24 @@ export default function CampaignDetail() {
   }, [id, session]);
 
   const pct = campaign ? percent(campaign.raised, campaign.goal) : 0;
+  const campaignUrl = campaign ? `${window.location.origin}/campaign/${encodeURIComponent(campaign.id)}` : '';
+
+  useEffect(() => {
+    if (!campaignUrl) return;
+
+    let active = true;
+    QRCode.toDataURL(campaignUrl, {
+      errorCorrectionLevel: 'M',
+      margin: 2,
+      width: 320,
+    }).then((dataUrl) => {
+      if (active) setQrCodeUrl(dataUrl);
+    }).catch(() => {
+      if (active) setQrCodeUrl('');
+    });
+
+    return () => { active = false; };
+  }, [campaignUrl]);
 
   // Close modal on Escape
   useEffect(() => {
@@ -76,17 +96,31 @@ export default function CampaignDetail() {
   };
 
   async function handleShare() {
-    const shareData = { title: campaign.name, text: `Support ${campaign.name} on CrowdHeal`, url: location.href };
+    const shareData = { title: campaign.name, text: `Support ${campaign.name} on CrowdHeal`, url: campaignUrl };
     try {
       if (navigator.share) {
         await navigator.share(shareData);
       } else {
-        await navigator.clipboard.writeText(location.href);
+        await navigator.clipboard.writeText(campaignUrl);
         alert('Campaign link copied.');
       }
     } catch (err) {
       if (err.name !== 'AbortError') alert('Unable to share this link right now.');
     }
+  }
+
+  function handleDownloadQrCode() {
+    if (!qrCodeUrl) {
+      alert('Your QR code is still being generated. Please try again in a moment.');
+      return;
+    }
+
+    const link = document.createElement('a');
+    link.href = qrCodeUrl;
+    link.download = `crowdheal-${campaign.id}-qr.png`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   }
 
   function handleDonate() {
@@ -208,6 +242,21 @@ export default function CampaignDetail() {
               )}
               <button className="share" onClick={handleShare}>
                 Share campaign
+              </button>
+
+              <div className="qr-code">
+                {qrCodeUrl ? (
+                  <img src={qrCodeUrl} alt={`QR code for ${campaign.name}`} />
+                ) : (
+                  <div className="qr-code__loading" aria-live="polite">Generating QR code…</div>
+                )}
+                <div>
+                  <strong>Share by QR code</strong>
+                  <p>Scan to open this campaign.</p>
+                </div>
+              </div>
+              <button className="share" type="button" onClick={handleDownloadQrCode} disabled={!qrCodeUrl}>
+                Download QR Code
               </button>
             </section>
 
