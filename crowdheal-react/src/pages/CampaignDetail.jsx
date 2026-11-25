@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { allCampaigns } from '../data/campaigns';
-import { getAllCampaigns, getDonations, saveDonations, money, percent } from '../utils/helpers';
+import { getAllCampaigns, getLocalCampaigns, isPublicCampaign, getDonations, saveDonations, money, percent } from '../utils/helpers';
 import { useSession } from '../hooks/useSession';
+import { isAdminSession } from '../utils/auth';
 import './CampaignDetail.css';
 
 const PRESETS = [500, 1000, 2500, 5000];
@@ -12,6 +13,7 @@ export default function CampaignDetail() {
   const session = useSession();
   const [campaign, setCampaign] = useState(null);
   const [notFound, setNotFound] = useState(false);
+  const [previewOnly, setPreviewOnly] = useState(false);
 
   // Donation state
   const [modalOpen, setModalOpen] = useState(false);
@@ -25,12 +27,27 @@ export default function CampaignDetail() {
     const found = getAllCampaigns(allCampaigns).find(c => c.id === id);
     if (found) {
       setCampaign(found);
+      setPreviewOnly(false);
       setNotFound(false);
-    } else {
-      setCampaign(null);
-      setNotFound(true);
+      return;
     }
-  }, [id]);
+
+    const local = getLocalCampaigns().find(c => c.id === id);
+    const ownerEmail = String(local?.ownerEmail || local?.organizerEmail || '').toLowerCase();
+    const canPreview = local && session && (
+      isAdminSession(session) || ownerEmail === session.email.toLowerCase()
+    );
+    if (canPreview && !isPublicCampaign(local)) {
+      setCampaign(local);
+      setPreviewOnly(true);
+      setNotFound(false);
+      return;
+    }
+
+    setCampaign(null);
+    setPreviewOnly(false);
+    setNotFound(true);
+  }, [id, session]);
 
   const pct = campaign ? percent(campaign.raised, campaign.goal) : 0;
 
@@ -182,9 +199,13 @@ export default function CampaignDetail() {
                 <Link to="/dashboard" className="share">Manage your campaign</Link>
               )}
 
-              <button className="donate" onClick={() => setModalOpen(true)}>
-                Support this campaign
-              </button>
+              {previewOnly ? (
+                <p className="goal">This request is not public yet, so donations are closed.</p>
+              ) : (
+                <button className="donate" onClick={() => setModalOpen(true)}>
+                  Support this campaign
+                </button>
+              )}
               <button className="share" onClick={handleShare}>
                 Share campaign
               </button>

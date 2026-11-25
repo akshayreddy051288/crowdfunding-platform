@@ -9,6 +9,8 @@ import CreateCampaign from './pages/CreateCampaign'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import AdminLogin from './pages/AdminLogin'
+import Admin from './pages/Admin'
 import NotFound from './pages/NotFound'
 
 function ScrollManager() {
@@ -49,10 +51,12 @@ export default function App() {
           <Route path="/campaign/:id" element={<CampaignDetail />} />
           <Route path="/create-campaign" element={<CreateCampaign />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
       </Routes>
     </BrowserRouter>
   )

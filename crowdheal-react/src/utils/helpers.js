@@ -43,10 +43,41 @@ export function saveDonations(donations) {
   localStorage.setItem('crowdhealDonations', JSON.stringify(donations));
 }
 
-/** Merge seeded campaigns with user-published ones and apply stored donations. */
+/** Campaigns created before review existed stay public. New ones must be approved. */
+export function isPublicCampaign(campaign) {
+  return !campaign?.status || campaign.status === 'approved';
+}
+
+export function campaignStatus(campaign) {
+  if (campaign?.status === 'pending' || campaign?.status === 'rejected' || campaign?.status === 'approved') {
+    return campaign.status;
+  }
+  return 'approved';
+}
+
+/** Accept or reject a fundraiser request. */
+export function reviewCampaign(id, status, note = '') {
+  if (status !== 'approved' && status !== 'rejected') {
+    throw new Error('Choose accept or reject.');
+  }
+  const saved = getLocalCampaigns();
+  const index = saved.findIndex(c => c.id === id);
+  if (index < 0) throw new Error('Campaign no longer exists.');
+  saved[index] = {
+    ...saved[index],
+    status,
+    reviewNote: String(note || '').trim(),
+    reviewedAt: new Date().toISOString(),
+  };
+  saveLocalCampaigns(saved);
+  return saved[index];
+}
+
+/** Merge seeded campaigns with approved fundraiser campaigns and apply stored donations. */
 export function getAllCampaigns(seedCampaigns) {
   const merged = seedCampaigns.map(c => ({ ...c }));
   getLocalCampaigns().forEach(item => {
+    if (!isPublicCampaign(item)) return;
     if (!merged.some(c => c.id === item.id)) merged.push({ ...item });
   });
   const donations = getDonations();

@@ -8,6 +8,14 @@ const DEFAULT_CREDENTIALS = [
   { email: '2500032572@kluniversity.in', password: 'Klu@123', firstName: 'Pujith', lastName: 'Sai' },
 ];
 
+const ADMIN_ACCOUNT = {
+  email: 'admin@crowdheal.in',
+  password: 'Admin@123',
+  firstName: 'CrowdHeal',
+  lastName: 'Admin',
+  role: 'admin',
+};
+
 function toHex(bytes) {
   return Array.from(new Uint8Array(bytes), b => b.toString(16).padStart(2, '0')).join('');
 }
@@ -35,9 +43,18 @@ export function getSession() {
 }
 
 function setSession(user) {
-  const session = { email: user.email, firstName: user.firstName, lastName: user.lastName };
+  const session = {
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    role: user.role === 'admin' ? 'admin' : 'user',
+  };
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));
   return session;
+}
+
+export function isAdminSession(session = getSession()) {
+  return session?.role === 'admin';
 }
 
 function getTemporaryUsers() {
@@ -51,6 +68,9 @@ function getTemporaryUsers() {
 
 export async function signIn({ email, password }) {
   const normalizedEmail = email.trim().toLowerCase();
+  if (normalizedEmail === ADMIN_ACCOUNT.email) {
+    throw new Error('Admin accounts sign in from the admin portal.');
+  }
   const defaultUser = DEFAULT_CREDENTIALS.find(e => e.email === normalizedEmail && e.password === password);
   if (defaultUser) return setSession(defaultUser);
 
@@ -61,9 +81,18 @@ export async function signIn({ email, password }) {
   return setSession(temporaryUser);
 }
 
+export async function signInAdmin({ email, password }) {
+  const normalizedEmail = email.trim().toLowerCase();
+  if (normalizedEmail !== ADMIN_ACCOUNT.email || password !== ADMIN_ACCOUNT.password) {
+    throw new Error('Admin email or password is incorrect.');
+  }
+  return setSession(ADMIN_ACCOUNT);
+}
+
 export async function signUp({ firstName, lastName, email, password }) {
   const normalizedEmail = email.trim().toLowerCase();
   const existing =
+    normalizedEmail === ADMIN_ACCOUNT.email ||
     DEFAULT_CREDENTIALS.some(e => e.email === normalizedEmail) ||
     getTemporaryUsers().some(e => e.email === normalizedEmail);
   if (existing) throw new Error('An account with this email already exists. Please sign in.');

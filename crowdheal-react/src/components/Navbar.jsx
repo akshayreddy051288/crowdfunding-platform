@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { getSession, logout } from '../utils/auth';
+import { getSession, isAdminSession, logout } from '../utils/auth';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -23,6 +23,7 @@ export default function Navbar() {
   }
 
   const isActive = (path) => location.pathname === path;
+  const admin = isAdminSession(session);
 
   return (
     <header className="site-header">
@@ -35,9 +36,14 @@ export default function Navbar() {
           <nav className="site-nav" aria-label="Main navigation">
             <Link to="/campaigns" className={isActive('/campaigns') ? 'active' : ''}>Browse Campaigns</Link>
             <Link to="/#how-it-works">How It Works</Link>
-            <Link to="/create-campaign" className={isActive('/create-campaign') ? 'active' : ''}>Start a Fundraiser</Link>
-            {session && (
+            {!admin && (
+              <Link to="/create-campaign" className={isActive('/create-campaign') ? 'active' : ''}>Start a Fundraiser</Link>
+            )}
+            {session && !admin && (
               <Link to="/dashboard" className={isActive('/dashboard') ? 'active' : ''}>Dashboard</Link>
+            )}
+            {admin && (
+              <Link to="/admin" className={isActive('/admin') ? 'active' : ''}>Review queue</Link>
             )}
           </nav>
 
@@ -71,10 +77,10 @@ export default function Navbar() {
         <nav className={`mobile-nav${mobileOpen ? ' open' : ''}`} aria-label="Mobile navigation">
           <Link to="/campaigns">Browse Campaigns</Link>
           <Link to="/#how-it-works">How It Works</Link>
-          <Link to="/create-campaign">Start a Fundraiser</Link>
+          {!admin && <Link to="/create-campaign">Start a Fundraiser</Link>}
           {session ? (
             <>
-              <Link to="/dashboard">Dashboard</Link>
+              {admin ? <Link to="/admin">Review queue</Link> : <Link to="/dashboard">Dashboard</Link>}
               <button className="btn btn--coral" style={{ marginTop: 8 }} onClick={handleLogout}>Sign Out</button>
             </>
           ) : (

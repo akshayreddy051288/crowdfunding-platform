@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSession } from '../hooks/useSession';
-import { getLocalCampaigns, saveLocalCampaigns } from '../utils/helpers';
+import { isAdminSession } from '../utils/auth';
+import { campaignStatus, getLocalCampaigns, saveLocalCampaigns } from '../utils/helpers';
 import './CreateCampaign.css';
 
 const CATEGORIES = ['Cancer', 'Emergency', 'Pediatric', 'Surgery', 'Transplant', 'Treatment', 'Other'];
@@ -28,7 +29,9 @@ export default function CreateCampaign() {
     if (!session) {
       const target = editId ? `/create-campaign?edit=${editId}` : '/create-campaign';
       navigate(`/login?returnTo=${encodeURIComponent(target)}`, { replace: true });
+      return;
     }
+    if (isAdminSession(session)) navigate('/admin', { replace: true });
   }, [session, navigate, editId]);
 
   useEffect(() => {
@@ -100,9 +103,15 @@ export default function CreateCampaign() {
       : `campaign-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 
     const daysLeft = Number(form.daysLeft);
+    const previousStatus = campaignToEdit ? campaignStatus(campaignToEdit) : 'pending';
+    const status = campaignToEdit && previousStatus === 'approved' ? 'approved' : 'pending';
     const campaign = {
       ...(campaignToEdit || {}),
       id,
+      status,
+      submittedAt: campaignToEdit?.submittedAt || new Date().toISOString(),
+      reviewNote: status === 'pending' ? '' : campaignToEdit?.reviewNote || '',
+      reviewedAt: status === 'pending' ? '' : campaignToEdit?.reviewedAt || '',
       name: form.name.trim(),
       organizerName: form.organizerName.trim(),
       organizerEmail: session.email,
@@ -130,14 +139,19 @@ export default function CreateCampaign() {
         saved.push(campaign);
       }
       saveLocalCampaigns(saved);
-      setMessage({ type: 'success', text: campaignToEdit ? 'Campaign updated. Redirecting…' : 'Campaign published! Redirecting…' });
+      const successText = status === 'pending'
+        ? (campaignToEdit ? 'Sent back for review. Redirecting…' : 'Submitted for review. Redirecting…')
+        : 'Campaign updated. Redirecting…';
+      setMessage({ type: 'success', text: successText });
       setTimeout(() => navigate('/dashboard'), 1200);
     } catch (err) {
       setMessage({ type: 'error', text: 'Could not save this campaign. Please try again.' });
     }
   }
 
-  if (!session) return null;
+  if (!session || isAdminSession(session)) return null;
+
+  const editingLive = campaignToEdit && campaignStatus(campaignToEdit) === 'approved';
 
   return (
     <>
@@ -149,8 +163,10 @@ export default function CreateCampaign() {
           </h1>
           <p className="page-description">
             {editId
-              ? "Edit the campaign details supporters see. Your fundraising progress and donor history will be kept."
-              : "Share the patient's story and treatment goal. Required details must be complete before you can publish."}
+              ? editingLive
+                ? "Edit the campaign details supporters see. Your fundraising progress and donor history will be kept."
+                : "Update the request and send it back to the admin queue. It stays hidden until it is accepted."
+              : "Share the patient's story and treatment goal. New fundraisers stay in the admin queue until they are accepted."}
           </p>
         </section>
 
@@ -256,10 +272,14 @@ export default function CreateCampaign() {
 
             <div className="publish-wrap">
               <button className="btn btn--coral publish-btn" type="submit" disabled={!isValid}>
-                {editId ? 'Save Changes' : 'Publish Campaign'}
+                {editingLive ? 'Save Changes' : editId ? 'Resubmit for review' : 'Submit for review'}
               </button>
               <p className="publish-hint">
-                {isValid ? 'Your required details are complete. You can publish now.' : 'Complete all required fields to enable publishing.'}
+                {isValid
+                  ? editingLive
+                    ? 'Your required details are complete. You can save now.'
+                    : 'Your required details are complete. An admin will accept or reject this request.'
+                  : 'Complete all required fields to submit this fundraiser.'}
               </p>
             </div>
           </form>

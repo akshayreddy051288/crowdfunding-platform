@@ -1,8 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSession } from '../hooks/useSession';
-import { getLocalCampaigns, saveLocalCampaigns, getDonations, saveDonations, money } from '../utils/helpers';
+import { isAdminSession } from '../utils/auth';
+import { campaignStatus, getLocalCampaigns, saveLocalCampaigns, getDonations, saveDonations, money } from '../utils/helpers';
 import './Dashboard.css';
+
+const STATUS_COPY = {
+  pending: 'Pending review. This fundraiser is in the admin queue and is not public yet.',
+  approved: 'Accepted. This fundraiser is live and open for donations.',
+  rejected: 'Rejected. Update the details and resubmit if you want another review.',
+};
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -13,8 +20,23 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!session) { navigate('/login?returnTo=/dashboard', { replace: true }); return; }
+    if (isAdminSession(session)) { navigate('/admin', { replace: true }); return; }
     loadData();
   }, [session, navigate]);
+
+  useEffect(() => {
+    if (!session || isAdminSession(session)) return undefined;
+    function refresh(event) {
+      if (event?.key && event.key !== 'crowdhealCampaigns' && event.key !== 'crowdhealDonations') return;
+      loadData();
+    }
+    window.addEventListener('storage', refresh);
+    window.addEventListener('focus', refresh);
+    return () => {
+      window.removeEventListener('storage', refresh);
+      window.removeEventListener('focus', refresh);
+    };
+  }, [session]);
 
   function loadData() {
     const allLocal = getLocalCampaigns();
@@ -42,7 +64,7 @@ export default function Dashboard() {
     loadData();
   }, [session]);
 
-  if (!session) return null;
+  if (!session || isAdminSession(session)) return null;
 
   const fullName = `${session.firstName} ${session.lastName}`.trim();
 
@@ -52,7 +74,7 @@ export default function Dashboard() {
         <section className="intro">
           <p className="eyebrow-dash">Fundraiser workspace</p>
           <h1 className="page-title-dash">{fullName ? `Welcome, ${fullName}` : 'Your campaigns'}</h1>
-          <p className="intro-copy">Track your fundraising progress, thank your latest supporters, and manage campaign details.</p>
+          <p className="intro-copy">New requests wait in the admin queue. This page updates when a campaign is accepted or rejected.</p>
           <div className="top-actions">
             <Link to="/create-campaign" className="btn btn--coral">Create a campaign</Link>
             <Link to="/campaigns" className="btn btn--outline">Browse campaigns</Link>
@@ -63,7 +85,7 @@ export default function Dashboard() {
           {campaigns.length === 0 ? (
             <div className="empty-state">
               <h2>Your fundraiser journey starts here</h2>
-              <p>You have not published a campaign yet. Start one to share your story and keep track of donations in this dashboard.</p>
+              <p>You have not submitted a campaign yet. Start one and it will appear here while an admin reviews it.</p>
               <Link to="/create-campaign" className="btn btn--coral">Start a fundraiser</Link>
             </div>
           ) : (
@@ -73,6 +95,8 @@ export default function Dashboard() {
               const donors = (Number(c.donors) || 0) + (Number(d.donors) || 0);
               const pct = c.goal ? Math.min(Math.round(raised / c.goal * 100), 100) : 0;
               const recentDonors = Array.isArray(d.recent) ? [...d.recent].reverse().slice(0, 5) : [];
+              const status = campaignStatus(c);
+              const statusLabel = status === 'pending' ? 'Pending' : status === 'rejected' ? 'Rejected' : 'Accepted';
 
               return (
                 <article className="campaign-card-dash" key={c.id}>
@@ -85,8 +109,13 @@ export default function Dashboard() {
                           <p className="campaign-meta">{c.category || 'Medical care'} · {c.location || ''}</p>
                         </div>
                         <div className="campaign-actions">
-                          <Link to={`/campaign/${c.id}`} className="btn btn--outline">View</Link>
-                          <Link to={`/create-campaign?edit=${c.id}`} className="btn btn--outline">Edit</Link>
+                          <span className={`status-pill status-pill--${status}`}>{statusLabel}</span>
+                          {status === 'approved' && (
+                            <Link to={`/campaign/${c.id}`} className="btn btn--outline">View</Link>
+                          )}
+                          <Link to={`/create-campaign?edit=${c.id}`} className="btn btn--outline">
+                            {status === 'rejected' ? 'Edit & resubmit' : 'Edit'}
+                          </Link>
                           <button className="btn btn--danger" type="button" onClick={() => handleRemove(c.id)}>Remove</button>
                         </div>
                       </div>
@@ -113,6 +142,11 @@ export default function Dashboard() {
                         <span>{pct}% funded</span>
                         <span>{money(Math.max((Number(c.goal) || 0) - raised, 0))} to go</span>
                       </div>
+
+                      <p className={`status-banner status-banner--${status}`}>
+                        {STATUS_COPY[status]}
+                        {status === 'rejected' && c.reviewNote ? ` Reason: ${c.reviewNote}` : ''}
+                      </p>
 
                       <p className="campaign-story">{c.story || ''}</p>
                     </div>

@@ -1,0 +1,129 @@
+.admin-main { flex: 1; width: 100%; padding-bottom: 72px; }
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-pill--pending { background: #fff4d6; color: #8a6410; }
+.status-pill--approved { background: #e7f6ee; color: #1f6b45; }
+.status-pill--rejected { background: #fff0ed; color: #a83e2b; }
+
+.admin-list { display: grid; gap: 18px; }
+
+.admin-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 28px rgba(15, 92, 92, .06);
+}
+
+.admin-card__head {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 18px;
+}
+
+.admin-card__head img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #edf2ef;
+}
+
+.admin-card__title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.admin-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
+.admin-meta,
+.admin-goal {
+  color: var(--muted);
+  font-size: .84rem;
+  margin-top: 4px;
+}
+
+.admin-story {
+  margin-top: 10px;
+  color: #52606d;
+  font-size: .9rem;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.reject-box {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.reject-box label {
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.reject-box textarea {
+  width: 100%;
+  min-height: 84px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+  resize: vertical;
+}
+
+.reviewed { margin-top: 36px; }
+
+.reviewed h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+}
+
+.reviewed ul {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.reviewed li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.reviewed strong { display: block; }
+.decision-who span { color: var(--muted); font-size: .82rem; }
+
+@media (max-width: 700px) {
+  .admin-card__head { grid-template-columns: 1fr; }
+  .admin-card__title-row { display: grid; }
+}

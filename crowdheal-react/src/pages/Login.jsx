@@ -97,6 +97,8 @@ export default function Login() {
 
         <p className="auth-footer">
           <Link to="/">← Back to CrowdHeal</Link>
+          <span> · </span>
+          <Link to="/admin/login">Admin portal</Link>
         </p>
       </div>
     </div>
